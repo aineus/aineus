@@ -25,7 +25,7 @@ api.interceptors.request.use(
 export const authApi = {
   register: async (data: { email: string; password: string; full_name: string }) => {
     try {
-      const response = await api.post('/users', data);
+      const response = await api.post('/users/', data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -39,13 +39,14 @@ export const authApi = {
 
   login: async (email: string, password: string) => {
     try {
-      const formData = new FormData();
-      formData.append('username', email);
-      formData.append('password', password);
+      // Create URLSearchParams instead of FormData for FastAPI OAuth compatibility
+      const params = new URLSearchParams();
+      params.append('username', email);
+      params.append('password', password);
 
-      const response = await api.post('/auth/token', formData, {
+      const response = await axios.post(`${BASE_URL}/auth/token`, params, {
         headers: {
-          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 

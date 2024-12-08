@@ -16,18 +16,19 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // In your login page.tsx, update the handleSubmit function:
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
+  
     try {
-      console.log('Attempting login for:', email); // Debug log
       await login(email, password);
-      console.log('Login successful'); // Debug log
-      router.push('/news');
+      console.log('Login successful');
+      // Force a page refresh to ensure middleware picks up the new cookie
+      window.location.href = '/news';
     } catch (err: any) {
-      console.error('Login error:', err); // Debug log
+      console.error('Login error:', err);
       setError(err.response?.data?.detail || 'Invalid email or password');
     } finally {
       setIsLoading(false);

@@ -6,10 +6,14 @@ export function middleware(request: NextRequest) {
   const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
   const isPublicPage = request.nextUrl.pathname === '/';
 
+  // If trying to access protected route without token
   if (!token && !isAuthPage && !isPublicPage) {
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+    const url = new URL('/auth/login', request.url);
+    url.searchParams.set('from', request.nextUrl.pathname);
+    return NextResponse.redirect(url);
   }
 
+  // If trying to access auth pages with valid token
   if (token && isAuthPage) {
     return NextResponse.redirect(new URL('/news', request.url));
   }

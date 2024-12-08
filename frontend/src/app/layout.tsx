@@ -1,9 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Source_Sans_3 } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from '@/components/providers/client-provider'
+import { AuthProvider } from '@/contexts/AuthContext'
 
-const inter = Inter({ subsets: ['latin'] })
+const sourceSans = Source_Sans_3({ 
+  subsets: ['latin'],
+  variable: '--font-sans'
+})
 
 export const metadata: Metadata = {
   title: 'MyNeos - AI-Powered News',
@@ -17,11 +21,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${sourceSans.variable} font-sans`}>
         <ClientProviders>
-          <main className="min-h-screen bg-gray-50">
-            {children}
-          </main>
+          <AuthProvider>
+            <main className="min-h-screen bg-background">
+              {children}
+            </main>
+          </AuthProvider>
         </ClientProviders>
       </body>
     </html>

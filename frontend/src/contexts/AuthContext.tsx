@@ -47,26 +47,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    try {
-      setError(null);
-      setIsLoading(true);
+// In AuthContext.tsx, update the login function:
+const login = async (email: string, password: string) => {
+  try {
+    setError(null);
+    setIsLoading(true);
+    
+    const response = await authApi.login(email, password);
+    
+    if (response.access_token) {
+      // Store in localStorage for API calls
+      localStorage.setItem('token', response.access_token);
       
-      const response = await authApi.login(email, password);
+      // Store in cookies for middleware
+      document.cookie = `token=${response.access_token}; path=/`;
       
-      if (response.access_token) {
-        localStorage.setItem('token', response.access_token);
-        await checkAuth();
-        router.push('/news');
-      }
-    } catch (err: any) {
-      const message = err.response?.data?.detail || 'Login failed. Please try again.';
-      setError(message);
-      throw new Error(message);
-    } finally {
-      setIsLoading(false);
+      await checkAuth();
+      router.push('/news');
     }
-  };
+  } catch (err: any) {
+    const message = err.response?.data?.detail || 'Login failed. Please try again.';
+    setError(message);
+    throw new Error(message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+// Update logout function too:
 
   const register = async (data: { email: string; password: string; full_name: string }) => {
     try {
@@ -95,9 +103,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem('token');
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     setUser(null);
     router.push('/auth/login');
   };
+  
 
   return (
     <AuthContext.Provider value={{ user, isLoading, error, login, register, logout }}>
