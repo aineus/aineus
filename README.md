@@ -1,8 +1,8 @@
 `Presently in development. Expect working version in couple of days`
 
-# MyNeos
+# AINeus
 
-MyNeos is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes MyNeos unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
+AINeus is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes AINeus unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
 
 
 ## 🌟 Key Features
@@ -137,4 +137,4 @@ Please use the [issue tracker](https://github.com/my-neos/my-neos/issues) to rep
 
 ## ⭐ Support
 
-If you like MyNeos, please consider giving it a star ⭐ to show your support.
+If you like AINeus, please consider giving it a star ⭐ to show your support.
