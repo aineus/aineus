@@ -1,3 +1,5 @@
+`Presently in development. Expecting working version in couple of days`
+
 # MyNeos
 
 MyNeos is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes MyNeos unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
