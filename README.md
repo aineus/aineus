@@ -1,4 +1,4 @@
-`Presently in development. Expecting working version in couple of days`
+`Presently in development. Expect working version in couple of days`
 
 # MyNeos
 
