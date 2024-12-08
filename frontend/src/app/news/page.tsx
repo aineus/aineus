@@ -1,87 +1,109 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { newsApi } from '@/lib/api';
+import { newsApi, promptsApi } from '@/lib/api';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { NewsCard } from '@/components/news/news-card';
+import { NewsList } from '@/components/news/news-list';
 import { useAuth } from '@/contexts/AuthContext';
-
-const CATEGORIES = ['All', 'Technology', 'Business', 'Politics', 'Science'];
+import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function NewsPage() {
   const { user } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedPromptId, setSelectedPromptId] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['news', selectedCategory, page],
-    queryFn: () => newsApi.getNews({
+  // Fetch prompts
+  const { data: prompts, isLoading: isLoadingPrompts } = useQuery({
+    queryKey: ['prompts'],
+    queryFn: () => promptsApi.getPrompts(),
+    enabled: !!user,
+  });
+
+  // Set first prompt as default when prompts are loaded
+  useEffect(() => {
+    if (prompts?.length && !selectedPromptId) {
+      setSelectedPromptId(prompts[0].id);
+    }
+  }, [prompts]);
+
+  // Fetch news for selected prompt
+  const { data: news, isLoading: isLoadingNews, error } = useQuery({
+    queryKey: ['prompt-news', selectedPromptId, page],
+    queryFn: () => newsApi.getPromptNews({
+      promptId: selectedPromptId!,
       skip: (page - 1) * limit,
       limit,
-      category: selectedCategory === 'All' ? undefined : selectedCategory.toLowerCase(),
     }),
+    enabled: !!selectedPromptId,
   });
 
   if (!user) {
-    return <div>Please login to view news</div>;
+    return <div className="p-8 text-center">Please login to view news</div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold">Latest News</h1>
-
-      {/* Categories */}
+      {/* Prompts Selector */}
       <Card className="p-4">
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+        {isLoadingPrompts ? (
+          <div className="flex gap-2">
+            {[...Array(3)].map((_, i) => (
+              <Skeleton key={i} className="h-10 w-24" />
+            ))}
+          </div>
+        ) : prompts?.length ? (
+          <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex space-x-2">
+              {prompts.map((prompt) => (
+                <Button
+                  key={prompt.id}
+                  variant={selectedPromptId === prompt.id ? "default" : "outline"}
+                  onClick={() => setSelectedPromptId(prompt.id)}
+                  className="flex-shrink-0"
+                >
+                  {prompt.name}
+                </Button>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        ) : (
+          <div className="text-center py-2 text-gray-500">
+            No prompts found. Create your first prompt newspaper.
+          </div>
+        )}
       </Card>
 
       {/* News List */}
-      <div className="space-y-4">
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : error ? (
-          <div>Error loading news</div>
-        ) : data?.items?.length ? (
-          data.items.map((news: any) => (
-            <NewsCard
-              key={news.id}
-              news={news}
-            />
-          ))
-        ) : (
-          <div>No news found</div>
-        )}
-      </div>
+      <NewsList 
+        news={news?.items || []}
+        isLoading={isLoadingNews}
+        error={error?.message}
+      />
 
       {/* Pagination */}
-      <div className="flex justify-center gap-2">
-        <Button
-          variant="outline"
-          disabled={page === 1}
-          onClick={() => setPage(p => p - 1)}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setPage(p => p + 1)}
-        >
-          Next
-        </Button>
-      </div>
+      {news?.items?.length > 0 && (
+        <div className="flex justify-center gap-2">
+          <Button
+            variant="outline"
+            disabled={page === 1}
+            onClick={() => setPage(p => p - 1)}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            disabled={news?.items?.length < limit}
+            onClick={() => setPage(p => p + 1)}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

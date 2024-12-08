@@ -6,10 +6,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <div className="text-center space-y-8 max-w-2xl">
         <h1 className="text-4xl font-bold mb-4">
-          Welcome to MyNeos
+          Welcome to AINeus
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Experience news through the lens of AI. Transform how you read news with customizable AI prompts.
+          Reclaim your newspapers. Transform how you read news with customizable AI prompts.
         </p>
         <div className="space-x-4">
           <Link href="/auth/login">

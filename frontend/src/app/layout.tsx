@@ -3,6 +3,7 @@ import { Source_Sans_3 } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from '@/components/providers/client-provider'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { Header } from '@/components/layout/header'
 
 const sourceSans = Source_Sans_3({ 
   subsets: ['latin'],
@@ -10,8 +11,8 @@ const sourceSans = Source_Sans_3({
 })
 
 export const metadata: Metadata = {
-  title: 'MyNeos - AI-Powered News',
-  description: 'Personalized news with customizable AI prompts',
+  title: 'AINeus - Your AI-Powered News',
+  description: 'Reclaim your newspaper with customizable AI prompts',
 }
 
 export default function RootLayout({
@@ -24,7 +25,8 @@ export default function RootLayout({
       <body className={`${sourceSans.variable} font-sans`}>
         <ClientProviders>
           <AuthProvider>
-            <main className="min-h-screen bg-background">
+            <Header />
+            <main className="min-h-screen bg-background pt-16">
               {children}
             </main>
           </AuthProvider>
