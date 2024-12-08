@@ -1,8 +1,8 @@
-from pydantic import BaseModel, EmailStr, HttpUrl, Field
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
-# User schemas
+# User Schemas
 class UserBase(BaseModel):
     email: EmailStr
     full_name: Optional[str] = None
@@ -10,15 +10,18 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserUpdate(UserBase):
+    password: Optional[str] = None
+
 class User(UserBase):
     id: int
     is_active: bool = True
-    is_superuser: bool = False
     created_at: datetime
 
     class Config:
         from_attributes = True
 
+# Token Schemas
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -26,13 +29,14 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
-# News schemas
+# News Schemas
 class NewsBase(BaseModel):
     title: str
     content: str
     source: str
-    url: Optional[HttpUrl] = None
-    image_url: Optional[HttpUrl] = None
+    summary: Optional[str] = None
+    url: Optional[str] = None
+    image_url: Optional[str] = None
 
 class NewsCreate(NewsBase):
     published_at: datetime
@@ -41,7 +45,6 @@ class NewsCreate(NewsBase):
 
 class News(NewsBase):
     id: int
-    summary: Optional[str] = None
     published_at: datetime
     created_at: datetime
     updated_at: datetime
@@ -50,7 +53,7 @@ class News(NewsBase):
     class Config:
         from_attributes = True
 
-# Prompt schemas
+# Prompt Schemas
 class PromptBase(BaseModel):
     name: str
     description: Optional[str] = None
@@ -63,20 +66,32 @@ class PromptBase(BaseModel):
 class PromptCreate(PromptBase):
     user_id: int
 
+class PromptUpdate(PromptBase):
+    pass
+
 class Prompt(PromptBase):
     id: int
+    user_id: int
     created_at: datetime
     updated_at: datetime
-    user_id: int
 
     class Config:
         from_attributes = True
 
-# Response schemas
-class ResponseBase(BaseModel):
-    message: str
-    data: Optional[Dict[str, Any]] = None
+# Transformation Schemas
+class TransformationBase(BaseModel):
+    news_id: int
+    prompt_id: int
 
-class ErrorResponse(ResponseBase):
-    error_code: str
-    details: Optional[Dict[str, Any]] = None
+class TransformationCreate(TransformationBase):
+    pass
+
+class Transformation(TransformationBase):
+    id: int
+    transformed_content: str
+    llm_provider: str
+    meta_info: Optional[Dict[str, Any]] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

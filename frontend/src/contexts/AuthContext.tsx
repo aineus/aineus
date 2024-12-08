@@ -39,7 +39,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(userData);
       }
     } catch (error) {
+      console.error('Auth check failed:', error);
       localStorage.removeItem('token');
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
@@ -48,31 +50,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       setError(null);
-      const { access_token } = await authApi.login(email, password);
-      localStorage.setItem('token', access_token);
-      await checkAuth();
-      router.push('/news');
+      setIsLoading(true);
+      
+      const response = await authApi.login(email, password);
+      
+      if (response.access_token) {
+        localStorage.setItem('token', response.access_token);
+        await checkAuth();
+        router.push('/news');
+      }
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed');
-      throw err;
+      const message = err.response?.data?.detail || 'Login failed. Please try again.';
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const register = async (data: { email: string; password: string; full_name: string }) => {
     try {
       setError(null);
-      await authApi.register(data);
+      setIsLoading(true);
+      
+      // First register
+      const registerResponse = await authApi.register(data);
+      
+      // Then login
       await login(data.email, data.password);
+      
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed');
-      throw err;
+      let message = 'Registration failed. Please try again.';
+      if (err.response?.data?.detail) {
+        message = err.response.data.detail;
+      } else if (err.message) {
+        message = err.message;
+      }
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
-    router.push('/');
+    router.push('/auth/login');
   };
 
   return (

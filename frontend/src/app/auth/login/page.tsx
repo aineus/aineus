@@ -22,13 +22,14 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      console.log('Attempting login...');
+      console.log('Attempting login for:', email); // Debug log
       await login(email, password);
-      console.log('Login successful');
+      console.log('Login successful'); // Debug log
       router.push('/news');
     } catch (err: any) {
-      console.error('Login error:', err);
+      console.error('Login error:', err); // Debug log
       setError(err.response?.data?.detail || 'Invalid email or password');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -44,8 +45,9 @@ export default function LoginPage() {
             <div className="space-y-2">
               <label className="text-sm">Email</label>
               <Input
+                id="email"
                 type="email"
-                placeholder="Email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -54,8 +56,9 @@ export default function LoginPage() {
             <div className="space-y-2">
               <label className="text-sm">Password</label>
               <Input
+                id="password"
                 type="password"
-                placeholder="Password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

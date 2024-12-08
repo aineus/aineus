@@ -13,7 +13,7 @@ async def create_user(
     user: schemas.UserCreate,
     db: Session = Depends(get_db)
 ):
-    # Check if user already exists
+    # Check if user exists
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(
@@ -21,7 +21,7 @@ async def create_user(
             detail="Email already registered"
         )
     
-    # Create new user
+    # Create new user with properly hashed password
     hashed_password = get_password_hash(user.password)
     db_user = User(
         email=user.email,
