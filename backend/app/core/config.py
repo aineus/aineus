@@ -1,11 +1,10 @@
-# backend/app/config.py
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, List
 
 class Settings(BaseSettings):
     # Project settings
-    PROJECT_NAME: str = "NewsPrompt"
+    PROJECT_NAME: str = "MyNeos"
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
@@ -32,7 +31,7 @@ class Settings(BaseSettings):
     
     # News Collection
     NEWS_UPDATE_INTERVAL: int = 30  # minutes
-    NEWS_SOURCES: list = ["newsapi", "reuters"]
+    NEWS_SOURCES: List[str] = ["newsapi", "reuters"]
     
     class Config:
         env_file = ".env"
