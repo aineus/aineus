@@ -2,7 +2,7 @@
 
 # AINeus
 
-#### "Reclaim your newspaper." LLM-powered personalized news reporting agents.
+#### "Reclaim your newspaper." LLM-powered personalized news editing agents.
 
 AINeus is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes AINeus unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
 
