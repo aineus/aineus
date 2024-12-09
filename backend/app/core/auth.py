@@ -8,15 +8,13 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.schemas import User as UserSchema
+from app.schemas.user import User as UserSchema  # Updated import
 
 settings = get_settings()
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/token")
-
-
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
@@ -57,7 +55,7 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     
-    return UserSchema.from_orm(user)
+    return UserSchema.model_validate(user)  # Updated to use model_validate
 
 # For development/testing, you can make this optional
 async def get_optional_current_user(
