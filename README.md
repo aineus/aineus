@@ -2,7 +2,7 @@
 
 # WhatsNews
 
-#### "Reclaim your newspaper." LLM-powered personalized news editing agents.
+#### "Reclaim your news!" LLM-powered personalized news editing agents.
 
 WhatsNews is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes WhatsNews unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
 
