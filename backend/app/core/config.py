@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     LOCAL_LLM_URL: Optional[str] = None
     LOCAL_LLM_MODEL: Optional[str] = None
     
+    # News API
+    NEWS_API_KEY: str
+    
     # Security
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7

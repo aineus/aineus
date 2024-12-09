@@ -25,10 +25,16 @@ export default function RootLayout({
       <body className={`${sourceSans.variable} font-sans`}>
         <ClientProviders>
           <AuthProvider>
-            <Header />
-            <main className="min-h-screen bg-background pt-16">
-              {children}
-            </main>
+            <div className="flex min-h-screen">
+              <Header />
+              <main className="flex-1">
+                {/* For mobile screens */}
+                <div className="md:hidden h-16" />
+                <div className="p-6">
+                  {children}
+                </div>
+              </main>
+            </div>
           </AuthProvider>
         </ClientProviders>
       </body>

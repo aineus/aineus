@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-32px)] p-4">
       <div className="text-center space-y-8 max-w-2xl">
         <h1 className="text-4xl font-bold mb-4">
           Welcome to AINeus

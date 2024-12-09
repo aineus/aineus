@@ -3,15 +3,27 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/contexts/AuthContext'
-import { Settings, LogOut, Plus, Menu } from 'lucide-react'
+import { Settings, LogOut, Menu, Newspaper, Library } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const NAVIGATION_ITEMS = [
+  {
+    href: '/news',
+    label: 'News',
+    icon: Newspaper,
+  },
+  {
+    href: '/prompts',
+    label: 'Prompts',
+    icon: Library,
+  },
+  {
+    href: '/settings',
+    label: 'Settings',
+    icon: Settings,
+  },
+]
 
 export function Header() {
   const { user, logout } = useAuth()
@@ -22,53 +34,107 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
-      <div className="flex h-full items-center justify-between px-4">
-        <Link href="/news" className="text-xl font-semibold">
-          AINeus
-        </Link>
+    <>
+      {/* Desktop Side Navigation */}
+      <header className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 border-r bg-background flex-col z-50">
+        <div className="p-6">
+          <Link href="/news" className="text-2xl font-bold">
+            AINeus
+          </Link>
+        </div>
 
         {user && (
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              asChild
-            >
-              <Link href="/prompts/new">
-                <Plus className="w-4 h-4 mr-2" />
-                New Prompt
-              </Link>
-            </Button>
+          <div className="flex flex-col flex-1 p-4">
+            {/* Main Navigation */}
+            <div className="flex-1 space-y-2">
+              {NAVIGATION_ITEMS.map((item) => {
+                const Icon = item.icon
+                const isActive = pathname.startsWith(item.href)
+                
+                return (
+                  <Button 
+                    key={item.href}
+                    variant={isActive ? "default" : "ghost"}
+                    size="lg"
+                    asChild
+                    className={cn(
+                      "w-full justify-start text-base",
+                      isActive && "bg-primary"
+                    )}
+                  >
+                    <Link href={item.href}>
+                      <Icon className="w-5 h-5 mr-3" />
+                      {item.label}
+                    </Link>
+                  </Button>
+                )
+              })}
+            </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <Link href="/prompts">
-                    Prompts
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings">
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Logout Button */}
+            <Button 
+              variant="ghost"
+              size="lg"
+              onClick={logout}
+              className="w-full justify-start text-base text-red-600 hover:text-red-700 hover:bg-red-50 mt-4"
+            >
+              <LogOut className="w-5 h-5 mr-3" />
+              Logout
+            </Button>
           </div>
         )}
+      </header>
+
+      {/* Mobile Top Navigation */}
+      <header className="md:hidden fixed top-0 left-0 right-0 h-20 border-b bg-background z-50">
+        <div className="flex h-full items-center justify-between px-6">
+          <Link href="/news" className="text-2xl font-bold">
+            AINeus
+          </Link>
+
+          {user && (
+            <Button variant="ghost" size="lg" asChild>
+              <Link href="/settings">
+                <Settings className="w-6 h-6" />
+              </Link>
+            </Button>
+          )}
+        </div>
+
+        {/* Mobile Bottom Navigation */}
+        {user && (
+          <div className="fixed bottom-0 left-0 right-0 border-t bg-background">
+            <div className="flex justify-around p-4">
+              {NAVIGATION_ITEMS.slice(0, 2).map((item) => {
+                const Icon = item.icon
+                const isActive = pathname.startsWith(item.href)
+                
+                return (
+                  <Button
+                    key={item.href}
+                    variant="ghost"
+                    size="lg"
+                    asChild
+                    className={cn(
+                      "flex-1 mx-1",
+                      isActive && "bg-accent"
+                    )}
+                  >
+                    <Link href={item.href}>
+                      <Icon className="w-5 h-5" />
+                    </Link>
+                  </Button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Content Padding */}
+      <div className="md:pl-64">
+        {/* Your page content goes here */}
       </div>
-    </header>
+    </>
   )
 }
