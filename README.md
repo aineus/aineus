@@ -1,4 +1,4 @@
-`Presently in development. Expect working version in couple of days`
+`Presently in development. Launching alpha version this Xmas`
 
 # AINeus
 
