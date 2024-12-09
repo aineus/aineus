@@ -39,7 +39,6 @@ AINeus is an open-source news aggregation and transformation platform that allow
 ## 🛡️ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Please use the [issue tracker](https://github.com/my-neos/my-neos/issues) to report any bugs or file feature requests.
 
 ## ⭐ Support
 
