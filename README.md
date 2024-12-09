@@ -6,7 +6,7 @@
 
 AINeus is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes AINeus unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
 
-![logo](https://github.com/user-attachments/assets/a892b257-588a-461c-83a4-0be037f698b6)
+![logo](https://github.com/user-attachments/assets/e6c68e03-1198-41f0-a7ae-f73209ba4de7)
 
 
 ## 🌟 Key Features
