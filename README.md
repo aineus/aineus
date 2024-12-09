@@ -1,10 +1,10 @@
 `Presently in development. Launching alpha version this Xmas`
 
-# AINeus
+# WhatsNews
 
 #### "Reclaim your newspaper." LLM-powered personalized news editing agents.
 
-AINeus is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes AINeus unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
+WhatsNews is an open-source news aggregation and transformation platform that allows users to consume news content through customizable AI prompts. What makes WhatsNews unique is its flexibility to work with different Language Models (LLMs) - from OpenAI's GPT to open-source models like Llama and Mistral.
 
 ![logo](https://github.com/user-attachments/assets/5b350e65-6f5f-48d2-a444-43b74036b16b)
 
@@ -45,4 +45,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ⭐ Support
 
-If you like AINeus, please consider giving it a star ⭐ to show your support.
+If you like WhatsNews, please consider giving it a star ⭐ to show your support.
