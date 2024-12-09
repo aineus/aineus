@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NewsFilters } from './news-filters';
 import { NewsCard } from './news-card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Filter, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { newsApi } from '@/lib/api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,6 +23,7 @@ interface NewsItem {
 }
 
 const NewsFeed = () => {
+  const [showFilters, setShowFilters] = React.useState(false);
   const [activePrompt, setActivePrompt] = React.useState<number | null>(null);
   const [filters, setFilters] = React.useState({
     category: 'all',
@@ -56,25 +57,50 @@ const NewsFeed = () => {
     return filtered;
   }, [news, filters]);
 
+  const hasActiveFilters = filters.category !== 'all' || 
+                          filters.search !== '' || 
+                          activePrompt !== null;
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">News Feed</h1>
-        <Button 
-          variant="outline"
-          onClick={() => refetch()}
-          disabled={isLoading}
-        >
-          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant={showFilters ? "default" : "outline"}
+            onClick={() => setShowFilters(!showFilters)}
+            className="relative"
+          >
+            {showFilters ? (
+              <X className="w-4 h-4 mr-2" />
+            ) : (
+              <Filter className="w-4 h-4 mr-2" />
+            )}
+            Filters
+            {hasActiveFilters && !showFilters && (
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
+            )}
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
       </div>
 
-      <NewsFilters 
-        filters={filters}
-        onChange={setFilters}
-        onPromptChange={setActivePrompt}
-      />
+      {showFilters && (
+        <div className="border rounded-lg p-4 bg-card">
+          <NewsFilters 
+            filters={filters}
+            onChange={setFilters}
+            onPromptChange={setActivePrompt}
+          />
+        </div>
+      )}
 
       <Tabs defaultValue="list" className="w-full">
         <TabsList>
