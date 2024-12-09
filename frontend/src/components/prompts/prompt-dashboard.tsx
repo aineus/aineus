@@ -41,7 +41,7 @@ const PromptDashboard = () => {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Your Prompt Newspapers</h1>
+        <h1 className="text-3xl font-normal">Your Prompt Newspapers</h1>
         <div className="flex gap-2">
           <Button 
             variant="outline"
@@ -75,7 +75,7 @@ const PromptDashboard = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="w-full h-48 animate-pulse bg-gray-100" />
+              <Card key={i} className="w-full h-48 animate-pulse bg-white" />
             ))}
           </div>
         ) : (

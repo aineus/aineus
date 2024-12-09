@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { Settings, LogOut, Menu, Newspaper, Library } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 const NAVIGATION_ITEMS = [
   {
@@ -37,9 +38,16 @@ export function Header() {
     <>
       {/* Desktop Side Navigation */}
       <header className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 border-r bg-background flex-col z-50">
-        <div className="p-6">
-          <Link href="/news" className="text-2xl font-bold">
-            AINeus
+        <div className="p-6 ml-3">
+          <Link href="/news" className="block">
+            <Image
+              src="/logo.png"
+              alt="WhatsNeus - AI-Powered News Platform"
+              width={150}
+              height={50}
+              priority
+              className="object-contain"
+            />
           </Link>
         </div>
 
@@ -76,7 +84,7 @@ export function Header() {
               variant="ghost"
               size="lg"
               onClick={logout}
-              className="w-full justify-start text-base text-red-600 hover:text-red-700 hover:bg-red-50 mt-4"
+              className="w-full justify-start text-base text-gray-600 hover:text-gray-700 hover:bg-gray-50 mt-4"
             >
               <LogOut className="w-5 h-5 mr-3" />
               Logout
@@ -88,8 +96,8 @@ export function Header() {
       {/* Mobile Top Navigation */}
       <header className="md:hidden fixed top-0 left-0 right-0 h-20 border-b bg-background z-50">
         <div className="flex h-full items-center justify-between px-6">
-          <Link href="/news" className="text-2xl font-bold">
-            AINeus
+          <Link href="/news" className="text-2xl font-normal">
+            WhatsNews
           </Link>
 
           {user && (

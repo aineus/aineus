@@ -37,7 +37,7 @@ const PromptDetail = ({ prompt, news }: PromptDetailProps) => {
           <Button variant="ghost" onClick={() => router.back()}>
             <ArrowLeft className="w-4 h-4 mr-2" /> Back
           </Button>
-          <h1 className="text-3xl font-bold">{prompt.name}</h1>
+          <h1 className="text-3xl font-normal">{prompt.name}</h1>
         </div>
         <div className="flex gap-2">
           <Button 
@@ -88,7 +88,7 @@ const PromptDetail = ({ prompt, news }: PromptDetailProps) => {
                 <CardTitle>News Stats</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{prompt.total_articles}</div>
+                <div className="text-3xl font-normal">{prompt.total_articles}</div>
                 <p className="text-sm text-muted-foreground">Total Articles</p>
               </CardContent>
             </Card>
@@ -98,7 +98,7 @@ const PromptDetail = ({ prompt, news }: PromptDetailProps) => {
                 <CardTitle>Categories</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">
+                <div className="text-3xl font-normal">
                   {Object.keys(prompt.categories_summary).length}
                 </div>
                 <p className="text-sm text-muted-foreground">Active Categories</p>

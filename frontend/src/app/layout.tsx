@@ -11,7 +11,7 @@ const sourceSans = Source_Sans_3({
 })
 
 export const metadata: Metadata = {
-  title: 'AINeus - Your AI-Powered News',
+  title: 'WhatsNews - Your AI-Powered News',
   description: 'Reclaim your newspaper with customizable AI prompts',
 }
 
